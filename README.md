@@ -1,5 +1,7 @@
 # Grace pkg
 
+[![Build Status](https://travis-ci.org/chapsuk/grace.svg?branch=master)](https://travis-ci.org/chapsuk/grace)
+
 Package with single function for create base context which will be canceled on signals:
 `SIGINT`, `SIGTERM`, `SIGHUP`.
 
@@ -15,12 +17,13 @@ import (
 
 func main() {
     ctx := grace.ShutdownContext(context.Background())
+    // context can be used for long time tasks or for what else
     <-ctx.Done()
     // do graceful shutdown after context was canceled
 }
 ```
 
-## Dig usage example
+## Example with dig
 
 ```go
 package main
