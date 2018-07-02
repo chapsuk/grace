@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"go.uber.org/dig"
 )
 
 // ShutdownContext returns child context from passed context which will be canceled
@@ -18,4 +20,23 @@ func ShutdownContext(c context.Context) context.Context {
 		cancel()
 	}()
 	return ctx
+}
+
+// ContextResult wrap grace context for dig usage
+type ContextResult struct {
+	dig.Out
+	Context context.Context `name:"grace_context"`
+}
+
+// NewShutdownContext returns wrapped ShutdownContext func result for dig usage
+func NewShutdownContext() ContextResult {
+	return ContextResult{
+		Context: ShutdownContext(context.Background()),
+	}
+}
+
+// ContextParams contains shutdown context for dig usage
+type ContextParams struct {
+	dig.In
+	Context context.Context `name:"grace_context"`
 }

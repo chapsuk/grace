@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.10.x
+
+install:
+  - go get go.uber.org/dig
+
+script:
+  - go test -v ./...
