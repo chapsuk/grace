@@ -8,7 +8,8 @@ import (
 )
 
 // ShutdownContext returns child context from passed context which will be canceled
-// on incoming signals: SIGINT, SIGTERM, SIGHUP
+// on incoming signals: SIGINT, SIGTERM, SIGHUP.
+// Ends immediately by os.Exit(1) after second signal
 func ShutdownContext(c context.Context) context.Context {
 	ctx, cancel := context.WithCancel(c)
 	go func() {
@@ -19,6 +20,8 @@ func ShutdownContext(c context.Context) context.Context {
 			return
 		case <-ch:
 			cancel()
+			<-ch
+			os.Exit(1)
 		}
 	}()
 	return ctx
