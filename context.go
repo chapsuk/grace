@@ -16,12 +16,12 @@ func ShutdownContext(c context.Context) context.Context {
 	return cancelContextOnSignals(c, true, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 }
 
-// ReloadContext returns child context which will be canceled on syscall.SIGINT or syscall.SIGTERM signal
+// StopContext returns child context which will be canceled on syscall.SIGINT or syscall.SIGTERM signal
 func StopContext(c context.Context) context.Context {
 	return cancelContextOnSignals(c, true, syscall.SIGINT, syscall.SIGTERM)
 }
 
-// ReloadContext returns child context which will be canceled on syscall.SIGHUP signal
+// ReloadContext returns reload signals channel 
 func ReloadChannel(ctx context.Context) <-chan struct{} {
 	done := make(chan struct{})
 	sighups := make(chan struct{})
